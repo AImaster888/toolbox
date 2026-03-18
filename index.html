@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>工務智庫 Toolbox</title>
+
+  <!-- Google Fonts：Noto Sans TC（正文）+ Space Mono（裝飾） -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===== 全域變數 ===== */
+    :root {
+      --bg: #F7F7F5;
+      --card-bg: #FFFFFF;
+      --text-primary: #1A1A1A;
+      --text-secondary: #6B6B6B;
+      --text-hint: #9B9B9B;
+      --accent: #2563EB;
+      --accent-light: #EFF6FF;
+      --accent-hover: #1D4ED8;
+      --border: #E5E5E3;
+      --border-hover: #D1D1CF;
+      --tag-bg: #F0F0EE;
+      --tag-active-bg: #2563EB;
+      --tag-active-text: #FFFFFF;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+      --shadow-hover: 0 8px 24px rgba(0,0,0,0.08);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --font-body: 'Noto Sans TC', -apple-system, sans-serif;
+      --font-mono: 'Space Mono', monospace;
+    }
+
+    /* ===== Reset ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ===== Header ===== */
+    .header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem 1.5rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .site-title {
+      font-family: var(--font-mono);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.5px;
+    }
+
+    .site-title span {
+      color: var(--accent);
+    }
+
+    .tool-count {
+      font-size: 0.8rem;
+      color: var(--text-hint);
+      background: var(--tag-bg);
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+    }
+
+    /* ===== 搜尋框 ===== */
+    .search-box {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+
+    .search-box svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-hint);
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.7rem 1rem 0.7rem 2.75rem;
+      font-size: 0.95rem;
+      font-family: var(--font-body);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--bg);
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .search-input::placeholder { color: var(--text-hint); }
+
+    /* ===== 分類標籤 ===== */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tag {
+      padding: 0.35rem 0.9rem;
+      font-size: 0.85rem;
+      font-family: var(--font-body);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      background: var(--card-bg);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .tag:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .tag.active {
+      background: var(--tag-active-bg);
+      color: var(--tag-active-text);
+      border-color: var(--tag-active-bg);
+    }
+
+    /* ===== 主要內容 ===== */
+    .main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    /* ===== 卡片網格 ===== */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    /* ===== 卡片 ===== */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      transition: all 0.25s ease;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-2px);
+    }
+
+    .card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.4;
+    }
+
+    .card-desc {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.25rem;
+    }
+
+    .card-category {
+      font-size: 0.75rem;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+      font-weight: 500;
+    }
+
+    .card-arrow {
+      color: var(--text-hint);
+      transition: transform 0.2s, color 0.2s;
+    }
+
+    .card:hover .card-arrow {
+      transform: translateX(3px);
+      color: var(--accent);
+    }
+
+    /* ===== Loading 狀態 ===== */
+    .loading {
+      text-align: center;
+      padding: 4rem 1rem;
+      color: var(--text-hint);
+    }
+
+    .loading-spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ===== 空狀態 ===== */
+    .empty {
+      text-align: center;
+      padding: 4rem 1rem;
+      color: var(--text-hint);
+    }
+
+    .empty-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+
+    /* ===== 錯誤狀態 ===== */
+    .error {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: #DC2626;
+      background: #FEF2F2;
+      border-radius: var(--radius);
+      margin: 1rem 0;
+    }
+
+    /* ===== Footer ===== */
+    .footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--text-hint);
+      font-size: 0.8rem;
+    }
+
+    /* ===== RWD ===== */
+    @media (max-width: 600px) {
+      .header { padding: 1.25rem 1rem 1rem; }
+      .main { padding: 1rem; }
+      .site-title { font-size: 1.25rem; }
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    /* ===== 淡入動畫 ===== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card { animation: fadeUp 0.4s ease both; }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-top">
+        <h1 class="site-title">工務智庫<span> Toolbox</span></h1>
+        <span class="tool-count" id="toolCount">載入中...</span>
+      </div>
+
+      <!-- 搜尋框 -->
+      <div class="search-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+        </svg>
+        <input type="text" class="search-input" id="searchInput" placeholder="搜尋工具名稱或說明...">
+      </div>
+
+      <!-- 分類標籤（自動產生） -->
+      <div class="tags" id="tagsContainer">
+        <button class="tag active" data-category="all">全部</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 主要內容 ===== -->
+  <main class="main">
+    <!-- Loading 狀態 -->
+    <div class="loading" id="loading">
+      <div class="loading-spinner"></div>
+      <p>正在讀取工具清單...</p>
+    </div>
+
+    <!-- 卡片網格 -->
+    <div class="grid" id="grid" style="display:none;"></div>
+
+    <!-- 空狀態 -->
+    <div class="empty" id="empty" style="display:none;">
+      <div class="empty-icon">🔍</div>
+      <p>找不到符合的工具</p>
+    </div>
+
+    <!-- 錯誤狀態 -->
+    <div class="error" id="error" style="display:none;"></div>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <p>工務智庫 Toolbox — 持續更新中</p>
+  </footer>
+
+  <script>
+    // =============================================================
+    // 📌 設定區：只需要改這裡！
+    // =============================================================
+    // 請把下面這行換成你的 Google Sheets 發佈網址
+    // 步驟：Google Sheets → 檔案 → 共用 → 發佈到網路 → 選 CSV → 發佈
+    // 會得到類似：https://docs.google.com/spreadsheets/d/e/2PACX-.../pub?output=csv
+    const SHEET_CSV_URL = 'YOUR_GOOGLE_SHEETS_CSV_URL_HERE';
+
+    // 欄位對應（照你的 Google Sheets 欄位順序，從 0 開始）
+    // A=id(0), B=名稱(1), C=分類(2), D=說明(3), E=連結(4), F=狀態(5)
+    const COL = {
+      ID: 0,       // A 欄：id
+      NAME: 1,     // B 欄：名稱
+      CATEGORY: 2, // C 欄：分類
+      DESC: 3,     // D 欄：說明
+      LINK: 4,     // E 欄：連結
+      STATUS: 5    // F 欄：狀態
+    };
+
+    // =============================================================
+    // 以下不用修改
+    // =============================================================
+
+    // 全域狀態
+    let allTools = [];
+    let currentCategory = 'all';
+    let currentSearch = '';
+
+    // DOM 元素
+    const grid = document.getElementById('grid');
+    const loading = document.getElementById('loading');
+    const empty = document.getElementById('empty');
+    const error = document.getElementById('error');
+    const tagsContainer = document.getElementById('tagsContainer');
+    const toolCount = document.getElementById('toolCount');
+    const searchInput = document.getElementById('searchInput');
+
+    // ----- CSV 解析器（處理逗號在引號內的情況）-----
+    function parseCSV(text) {
+      const rows = [];
+      let current = '';
+      let inQuotes = false;
+      const chars = text.trim();
+
+      for (let i = 0; i < chars.length; i++) {
+        const ch = chars[i];
+
+        if (ch === '"') {
+          // 雙引號跳脫
+          if (inQuotes && chars[i + 1] === '"') {
+            current += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (ch === ',' && !inQuotes) {
+          if (!rows.length || rows[rows.length - 1].done) {
+            rows.push({ cells: [current], done: false });
+          } else {
+            rows[rows.length - 1].cells.push(current);
+          }
+          current = '';
+        } else if ((ch === '\n' || ch === '\r') && !inQuotes) {
+          if (ch === '\r' && chars[i + 1] === '\n') i++;
+          if (!rows.length || rows[rows.length - 1].done) {
+            rows.push({ cells: [current], done: true });
+          } else {
+            rows[rows.length - 1].cells.push(current);
+            rows[rows.length - 1].done = true;
+          }
+          current = '';
+        } else {
+          current += ch;
+        }
+      }
+
+      // 最後一筆
+      if (current || (rows.length && !rows[rows.length - 1].done)) {
+        if (!rows.length || rows[rows.length - 1].done) {
+          rows.push({ cells: [current], done: true });
+        } else {
+          rows[rows.length - 1].cells.push(current);
+        }
+      }
+
+      return rows.map(r => r.cells);
+    }
+
+    // ----- 讀取 Google Sheets 資料 -----
+    async function fetchTools() {
+      try {
+        // 檢查是否已設定網址
+        if (SHEET_CSV_URL === 'YOUR_GOOGLE_SHEETS_CSV_URL_HERE') {
+          throw new Error('請先設定 Google Sheets CSV 網址！\n請打開 index.html，找到 SHEET_CSV_URL 並替換成你的網址。');
+        }
+
+        const response = await fetch(SHEET_CSV_URL);
+        if (!response.ok) throw new Error('無法讀取 Google Sheets，請檢查網址是否正確、是否已發佈到網路。');
+
+        const text = await response.text();
+        const rows = parseCSV(text);
+
+        // 第一行是標題，跳過
+        const dataRows = rows.slice(1);
+
+        // 轉換成物件，並且只保留「已完成」的項目
+        allTools = dataRows
+          .filter(row => {
+            const status = (row[COL.STATUS] || '').trim();
+            return status === '已完成';
+          })
+          .map(row => ({
+            id: (row[COL.ID] || '').trim(),
+            name: (row[COL.NAME] || '').trim(),
+            category: (row[COL.CATEGORY] || '未分類').trim(),
+            desc: (row[COL.DESC] || '').trim(),
+            link: (row[COL.LINK] || '').trim()
+          }))
+          .filter(tool => tool.name && tool.link); // 名稱和連結都要有才顯示
+
+        // 產生分類標籤
+        renderTags();
+
+        // 顯示卡片
+        renderCards();
+
+        // 隱藏 loading
+        loading.style.display = 'none';
+        grid.style.display = 'grid';
+
+      } catch (err) {
+        loading.style.display = 'none';
+        error.style.display = 'block';
+        error.textContent = err.message;
+      }
+    }
+
+    // ----- 產生分類標籤 -----
+    function renderTags() {
+      // 從資料中取得所有不重複的分類
+      const categories = [...new Set(allTools.map(t => t.category))].sort();
+
+      // 清空再重建（保留「全部」按鈕）
+      tagsContainer.innerHTML = '<button class="tag active" data-category="all">全部</button>';
+
+      categories.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = 'tag';
+        btn.dataset.category = cat;
+        btn.textContent = cat;
+        tagsContainer.appendChild(btn);
+      });
+
+      // 綁定點擊事件
+      tagsContainer.querySelectorAll('.tag').forEach(btn => {
+        btn.addEventListener('click', () => {
+          // 切換 active 狀態
+          tagsContainer.querySelectorAll('.tag').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          currentCategory = btn.dataset.category;
+          renderCards();
+        });
+      });
+    }
+
+    // ----- 篩選邏輯 -----
+    function getFilteredTools() {
+      return allTools.filter(tool => {
+        // 分類篩選
+        const matchCategory = currentCategory === 'all' || tool.category === currentCategory;
+
+        // 搜尋篩選（名稱 + 說明）
+        const keyword = currentSearch.toLowerCase();
+        const matchSearch = !keyword ||
+          tool.name.toLowerCase().includes(keyword) ||
+          tool.desc.toLowerCase().includes(keyword);
+
+        return matchCategory && matchSearch;
+      });
+    }
+
+    // ----- 渲染卡片 -----
+    function renderCards() {
+      const filtered = getFilteredTools();
+
+      // 更新計數
+      toolCount.textContent = `${filtered.length} / ${allTools.length} 個工具`;
+
+      if (filtered.length === 0) {
+        grid.style.display = 'none';
+        empty.style.display = 'block';
+        return;
+      }
+
+      empty.style.display = 'none';
+      grid.style.display = 'grid';
+
+      grid.innerHTML = filtered.map((tool, i) => `
+        <a class="card" href="${escapeHTML(tool.link)}" target="_blank" rel="noopener"
+           style="animation-delay: ${i * 0.05}s">
+          <div class="card-title">${escapeHTML(tool.name)}</div>
+          ${tool.desc ? `<div class="card-desc">${escapeHTML(tool.desc)}</div>` : ''}
+          <div class="card-footer">
+            <span class="card-category">${escapeHTML(tool.category)}</span>
+            <svg class="card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M5 12h14m-7-7 7 7-7 7"/>
+            </svg>
+          </div>
+        </a>
+      `).join('');
+    }
+
+    // ----- HTML 跳脫（防止 XSS）-----
+    function escapeHTML(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // ----- 搜尋功能 -----
+    searchInput.addEventListener('input', (e) => {
+      currentSearch = e.target.value;
+      renderCards();
+    });
+
+    // ----- 啟動！-----
+    fetchTools();
+  </script>
+</body>
+</html>
