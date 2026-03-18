@@ -372,15 +372,16 @@
     // 會得到類似：https://docs.google.com/spreadsheets/d/e/2PACX-.../pub?output=csv
     const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/1Nm2Lo7xo-wjkt0LOq7SmJYqmmdmfS1HUXTZyVZ1YtWM/export?format=csv';
 
-    // 欄位對應（照你的 Google Sheets 欄位順序，從 0 開始）
-    // A=id(0), B=名稱(1), C=分類(2), D=說明(3), E=連結(4), F=狀態(5)
+    // 欄位對應（照你的 Google Sheets 實際資料，從 0 開始）
+    // A=id(0), B=名稱(1), C=說明(2), D=連結(3), E=分類(4), F=prompt(5), G=狀態(6)
     const COL = {
       ID: 0,       // A 欄：id
       NAME: 1,     // B 欄：名稱
-      CATEGORY: 2, // C 欄：分類
-      DESC: 3,     // D 欄：說明
-      LINK: 4,     // E 欄：連結
-      STATUS: 5    // F 欄：狀態
+      DESC: 2,     // C 欄：說明
+      LINK: 3,     // D 欄：連結
+      CATEGORY: 4, // E 欄：分類
+      PROMPT: 5,   // F 欄：prompt（不顯示在前端）
+      STATUS: 6    // G 欄：狀態（已完成）
     };
 
     // =============================================================
@@ -478,7 +479,7 @@
           .map(row => ({
             id: (row[COL.ID] || '').trim(),
             name: (row[COL.NAME] || '').trim(),
-            category: (row[COL.CATEGORY] || '未分類').trim(),
+            category: (row[COL.CATEGORY] || '').trim() || '未分類',
             desc: (row[COL.DESC] || '').trim(),
             link: (row[COL.LINK] || '').trim()
           }))
