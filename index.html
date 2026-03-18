@@ -467,6 +467,33 @@
         const text = await response.text();
         const rows = parseCSV(text);
 
+        // === DEBUG：顯示原始資料（確認沒問題後可以刪掉這段）===
+        console.log('CSV 原始行數:', rows.length);
+        console.log('標題列:', JSON.stringify(rows[0]));
+        if (rows[1]) console.log('第1筆資料:', JSON.stringify(rows[1]));
+        if (rows[2]) console.log('第2筆資料:', JSON.stringify(rows[2]));
+        
+        // 在頁面上顯示 debug 資訊
+        const debugInfo = [
+          '=== DEBUG 資訊（確認成功後可刪除）===',
+          '總行數: ' + rows.length,
+          '標題列: ' + JSON.stringify(rows[0]),
+          '第1筆: ' + JSON.stringify(rows[1]),
+          '第2筆: ' + JSON.stringify(rows[2]),
+          '',
+          'COL.STATUS=' + COL.STATUS + ' → 第1筆的status值: [' + (rows[1] ? (rows[1][COL.STATUS] || '空') : '無') + ']',
+          'COL.LINK=' + COL.LINK + ' → 第1筆的link值: [' + (rows[1] ? (rows[1][COL.LINK] || '空') : '無') + ']',
+          'COL.NAME=' + COL.NAME + ' → 第1筆的name值: [' + (rows[1] ? (rows[1][COL.NAME] || '空') : '無') + ']',
+        ].join('\n');
+        error.style.display = 'block';
+        error.style.whiteSpace = 'pre-wrap';
+        error.style.textAlign = 'left';
+        error.style.fontSize = '12px';
+        error.style.color = '#333';
+        error.style.background = '#FFFDE7';
+        error.textContent = debugInfo;
+        // === DEBUG 結束 ===
+
         // 第一行是標題，跳過
         const dataRows = rows.slice(1);
 
