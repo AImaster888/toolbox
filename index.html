@@ -64,10 +64,11 @@
     .header-top {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      margin-bottom: 1rem;
+      gap: 1.5rem;
+      margin-bottom: 0.5rem;
     }
+
+    .site-title { flex: 0 0 auto; }
 
     .site-title {
       font-family: var(--font-mono);
@@ -89,17 +90,11 @@
       border-radius: 100px;
     }
 
-    /* ===== 搜尋列 ===== */
-    .search-row {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-
+    /* ===== 搜尋框（位於標題列） ===== */
     .search-box {
       position: relative;
-      flex: 0 0 50%;
+      flex: 1 1 auto;
+      max-width: 420px;
     }
 
     .search-box svg {
@@ -297,9 +292,8 @@
 
     /* ===== 免責聲明 ===== */
     .disclaimer {
-      flex: 1;
-      min-width: 0;
-      margin: 0;
+      margin: 0 0 1rem;
+      text-align: right;
       color: var(--text-hint);
       font-size: 0.75rem;
       line-height: 1.5;
@@ -310,8 +304,9 @@
       .header { padding: 1.25rem 1rem 1rem; }
       .main { padding: 1rem; }
       .site-title { font-size: 1.25rem; }
-      .search-row { flex-direction: column; align-items: stretch; gap: 0.625rem; }
-      .search-box { flex: 1 1 auto; }
+      .header-top { flex-wrap: wrap; gap: 0.75rem; }
+      .search-box { flex: 1 1 100%; max-width: none; }
+      .disclaimer { text-align: left; }
       .grid { grid-template-columns: 1fr; }
     }
 
@@ -331,19 +326,20 @@
     <div class="header-inner">
       <div class="header-top">
         <h1 class="site-title">工務智庫<span> Toolbox</span></h1>
-        <span class="tool-count" id="toolCount">載入中...</span>
-      </div>
 
-      <!-- 搜尋框 + 免責聲明 -->
-      <div class="search-row">
+        <!-- 搜尋框 -->
         <div class="search-box">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
           </svg>
           <input type="text" class="search-input" id="searchInput" placeholder="搜尋工具名稱或說明...">
         </div>
-        <p class="disclaimer">本站為個人常用工具整理，僅供自用；內容不保證正確，請自行查證，作者不負任何責任，亦不提供支援。</p>
+
+        <span class="tool-count" id="toolCount">載入中...</span>
       </div>
+
+      <!-- 免責聲明 -->
+      <p class="disclaimer">本站為個人常用工具整理，僅供自用；內容不保證正確，請自行查證，作者不負任何責任，亦不提供支援。</p>
 
       <!-- 分類標籤（自動產生） -->
       <div class="tags" id="tagsContainer">
