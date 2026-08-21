@@ -89,10 +89,17 @@
       border-radius: 100px;
     }
 
-    /* ===== 搜尋框 ===== */
+    /* ===== 搜尋列 ===== */
+    .search-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
     .search-box {
       position: relative;
-      margin-bottom: 1rem;
+      flex: 0 0 50%;
     }
 
     .search-box svg {
@@ -303,8 +310,8 @@
       .header { padding: 1.25rem 1rem 1rem; }
       .main { padding: 1rem; }
       .site-title { font-size: 1.25rem; }
-      .header-top { flex-wrap: wrap; }
-      .disclaimer { flex-basis: 100%; order: 3; }
+      .search-row { flex-direction: column; align-items: stretch; gap: 0.625rem; }
+      .search-box { flex: 1 1 auto; }
       .grid { grid-template-columns: 1fr; }
     }
 
@@ -324,16 +331,18 @@
     <div class="header-inner">
       <div class="header-top">
         <h1 class="site-title">工務智庫<span> Toolbox</span></h1>
-        <p class="disclaimer">本站為個人常用工具整理，僅供自用；內容不保證正確，請自行查證，作者不負任何責任，亦不提供支援。</p>
         <span class="tool-count" id="toolCount">載入中...</span>
       </div>
 
-      <!-- 搜尋框 -->
-      <div class="search-box">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
-        </svg>
-        <input type="text" class="search-input" id="searchInput" placeholder="搜尋工具名稱或說明...">
+      <!-- 搜尋框 + 免責聲明 -->
+      <div class="search-row">
+        <div class="search-box">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+          </svg>
+          <input type="text" class="search-input" id="searchInput" placeholder="搜尋工具名稱或說明...">
+        </div>
+        <p class="disclaimer">本站為個人常用工具整理，僅供自用；內容不保證正確，請自行查證，作者不負任何責任，亦不提供支援。</p>
       </div>
 
       <!-- 分類標籤（自動產生） -->
