@@ -68,7 +68,7 @@
       margin-bottom: 0.5rem;
     }
 
-    .site-title { flex: 0 0 auto; }
+    .site-title { flex: 1 1 0; white-space: nowrap; }
 
     .site-title {
       font-family: var(--font-mono);
@@ -82,8 +82,13 @@
       color: #93C5FD;
     }
 
+    .count-wrap {
+      flex: 1 1 0;
+      display: flex;
+      justify-content: flex-end;
+    }
+
     .tool-count {
-      margin-left: auto;
       white-space: nowrap;
       font-size: 0.8rem;
       color: rgba(255,255,255,0.85);
@@ -95,8 +100,7 @@
     /* ===== 搜尋框（位於標題列） ===== */
     .search-box {
       position: relative;
-      flex: 1 1 auto;
-      max-width: 420px;
+      flex: 0 1 420px;
     }
 
     .search-box svg {
@@ -308,7 +312,8 @@
       .main { padding: 1rem; }
       .site-title { font-size: 1.25rem; }
       .header-top { flex-wrap: wrap; gap: 0.75rem; }
-      .search-box { flex: 1 1 100%; max-width: none; }
+      .site-title { flex: 0 1 auto; }
+      .search-box { flex: 1 1 100%; order: 3; }
       .grid { grid-template-columns: 1fr; }
     }
 
@@ -337,7 +342,7 @@
           <input type="text" class="search-input" id="searchInput" placeholder="搜尋工具名稱或說明...">
         </div>
 
-        <span class="tool-count" id="toolCount">載入中...</span>
+        <div class="count-wrap"><span class="tool-count" id="toolCount">載入中...</span></div>
       </div>
 
       <!-- 免責聲明 -->
