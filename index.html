@@ -295,6 +295,29 @@
       font-size: 0.8rem;
     }
 
+    .disclaimer {
+      max-width: 640px;
+      margin: 1.25rem auto 0;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 0.8125rem;
+      line-height: 1.8;
+      text-align: left;
+    }
+
+    .disclaimer summary {
+      cursor: pointer;
+      text-align: center;
+      list-style: none;
+      color: var(--text-hint);
+    }
+
+    .disclaimer summary::-webkit-details-marker { display: none; }
+    .disclaimer summary::after { content: " ▾"; }
+    .disclaimer[open] summary::after { content: " ▴"; }
+    .disclaimer p { margin: 0.75rem 0 0; }
+
     /* ===== RWD ===== */
     @media (max-width: 600px) {
       .header { padding: 1.25rem 1rem 1rem; }
@@ -361,6 +384,13 @@
   <!-- ===== Footer ===== -->
   <footer class="footer">
     <p>工務智庫 Toolbox — 持續更新中</p>
+
+    <details class="disclaimer">
+      <summary>免責聲明</summary>
+      <p>本站為個人常用工具整理，僅供自用。</p>
+      <p>內容不保證正確、完整或即時，使用前請自行查證；因使用本站所生之任何後果，作者不負任何責任。</p>
+      <p>不提供諮詢、不接受回報、不提供技術支援。</p>
+    </details>
   </footer>
 
   <script>
