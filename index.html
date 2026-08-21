@@ -65,6 +65,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 1rem;
       margin-bottom: 1rem;
     }
 
@@ -289,14 +290,12 @@
 
     /* ===== 免責聲明 ===== */
     .disclaimer {
-      background: #F0F0EE;
-      border-left: 3px solid var(--border-hover);
-      border-radius: var(--radius);
-      padding: 0.625rem 0.875rem;
-      margin-bottom: 1.25rem;
-      color: var(--text-secondary);
-      font-size: 0.8125rem;
-      line-height: 1.6;
+      flex: 1;
+      min-width: 0;
+      margin: 0;
+      color: var(--text-hint);
+      font-size: 0.75rem;
+      line-height: 1.5;
     }
 
     /* ===== RWD ===== */
@@ -304,6 +303,8 @@
       .header { padding: 1.25rem 1rem 1rem; }
       .main { padding: 1rem; }
       .site-title { font-size: 1.25rem; }
+      .header-top { flex-wrap: wrap; }
+      .disclaimer { flex-basis: 100%; order: 3; }
       .grid { grid-template-columns: 1fr; }
     }
 
@@ -323,6 +324,7 @@
     <div class="header-inner">
       <div class="header-top">
         <h1 class="site-title">工務智庫<span> Toolbox</span></h1>
+        <p class="disclaimer">本站為個人常用工具整理，僅供自用；內容不保證正確，請自行查證，作者不負任何責任，亦不提供支援。</p>
         <span class="tool-count" id="toolCount">載入中...</span>
       </div>
 
@@ -343,9 +345,6 @@
 
   <!-- ===== 主要內容 ===== -->
   <main class="main">
-    <!-- 免責聲明 -->
-    <p class="disclaimer">本站為個人常用工具整理，僅供自用；內容不保證正確，請自行查證，作者不負任何責任，亦不提供支援。</p>
-
     <!-- Loading 狀態 -->
     <div class="loading" id="loading">
       <div class="loading-spinner"></div>
