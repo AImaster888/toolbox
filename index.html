@@ -48,8 +48,8 @@
 
     /* ===== Header ===== */
     .header {
-      background: var(--card-bg);
-      border-bottom: 1px solid var(--border);
+      background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%);
+      border-bottom: 1px solid #1E3A8A;
       padding: 2rem 1.5rem 1.5rem;
       position: sticky;
       top: 0;
@@ -74,20 +74,20 @@
       font-family: var(--font-mono);
       font-size: 1.5rem;
       font-weight: 700;
-      color: var(--text-primary);
+      color: #FFFFFF;
       letter-spacing: -0.5px;
     }
 
     .site-title span {
-      color: var(--accent);
+      color: #93C5FD;
     }
 
     .tool-count {
       margin-left: auto;
       white-space: nowrap;
       font-size: 0.8rem;
-      color: var(--text-hint);
-      background: var(--tag-bg);
+      color: rgba(255,255,255,0.85);
+      background: rgba(255,255,255,0.15);
       padding: 0.25rem 0.75rem;
       border-radius: 100px;
     }
@@ -113,17 +113,17 @@
       padding: 0.7rem 1rem 0.7rem 2.75rem;
       font-size: 0.95rem;
       font-family: var(--font-body);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      background: var(--bg);
+      border: 1px solid transparent;
+      border-radius: 100px;
+      background: #FFFFFF;
       color: var(--text-primary);
       outline: none;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
 
     .search-input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      border-color: #93C5FD;
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
     }
 
     .search-input::placeholder { color: var(--text-hint); }
@@ -139,10 +139,10 @@
       padding: 0.35rem 0.9rem;
       font-size: 0.85rem;
       font-family: var(--font-body);
-      border: 1px solid var(--border);
+      border: 1px solid rgba(255,255,255,0.35);
       border-radius: 100px;
-      background: var(--card-bg);
-      color: var(--text-secondary);
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.9);
       cursor: pointer;
       transition: all 0.2s;
       white-space: nowrap;
@@ -150,14 +150,16 @@
     }
 
     .tag:hover {
-      border-color: var(--accent);
-      color: var(--accent);
+      border-color: #FFFFFF;
+      background: rgba(255,255,255,0.18);
+      color: #FFFFFF;
     }
 
     .tag.active {
-      background: var(--tag-active-bg);
-      color: var(--tag-active-text);
-      border-color: var(--tag-active-bg);
+      background: #FFFFFF;
+      color: #1E3A8A;
+      border-color: #FFFFFF;
+      font-weight: 500;
     }
 
     /* ===== 主要內容 ===== */
@@ -295,7 +297,7 @@
     /* ===== 免責聲明 ===== */
     .disclaimer {
       margin: 0 0 1rem;
-      color: var(--text-hint);
+      color: rgba(255,255,255,0.72);
       font-size: 0.75rem;
       line-height: 1.5;
     }
