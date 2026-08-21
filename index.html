@@ -287,36 +287,17 @@
       margin: 1rem 0;
     }
 
-    /* ===== Footer ===== */
-    .footer {
-      text-align: center;
-      padding: 2rem 1rem;
-      color: var(--text-hint);
-      font-size: 0.8rem;
-    }
-
+    /* ===== 免責聲明 ===== */
     .disclaimer {
-      max-width: 640px;
-      margin: 1.25rem auto 0;
-      padding-top: 1.25rem;
-      border-top: 1px solid var(--border);
+      background: #F0F0EE;
+      border-left: 3px solid var(--border-hover);
+      border-radius: var(--radius);
+      padding: 0.625rem 0.875rem;
+      margin-bottom: 1.25rem;
       color: var(--text-secondary);
       font-size: 0.8125rem;
-      line-height: 1.8;
-      text-align: left;
+      line-height: 1.6;
     }
-
-    .disclaimer summary {
-      cursor: pointer;
-      text-align: center;
-      list-style: none;
-      color: var(--text-hint);
-    }
-
-    .disclaimer summary::-webkit-details-marker { display: none; }
-    .disclaimer summary::after { content: " ▾"; }
-    .disclaimer[open] summary::after { content: " ▴"; }
-    .disclaimer p { margin: 0.75rem 0 0; }
 
     /* ===== RWD ===== */
     @media (max-width: 600px) {
@@ -362,6 +343,9 @@
 
   <!-- ===== 主要內容 ===== -->
   <main class="main">
+    <!-- 免責聲明 -->
+    <p class="disclaimer">本站為個人常用工具整理，僅供自用；內容不保證正確，請自行查證，作者不負任何責任，亦不提供支援。</p>
+
     <!-- Loading 狀態 -->
     <div class="loading" id="loading">
       <div class="loading-spinner"></div>
@@ -380,18 +364,6 @@
     <!-- 錯誤狀態 -->
     <div class="error" id="error" style="display:none;"></div>
   </main>
-
-  <!-- ===== Footer ===== -->
-  <footer class="footer">
-    <p>工務智庫 Toolbox — 持續更新中</p>
-
-    <details class="disclaimer">
-      <summary>免責聲明</summary>
-      <p>本站為個人常用工具整理，僅供自用。</p>
-      <p>內容不保證正確、完整或即時，使用前請自行查證；因使用本站所生之任何後果，作者不負任何責任。</p>
-      <p>不提供諮詢、不接受回報、不提供技術支援。</p>
-    </details>
-  </footer>
 
   <script>
     // =============================================================
