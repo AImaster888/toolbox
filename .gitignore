@@ -1,0 +1,5 @@
+# 改檔前的備份副本，不進版控
+*.bak-*
+
+# Claude Code 本機設定
+.claude/
