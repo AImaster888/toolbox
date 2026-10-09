@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>工務小幫手 Toolbox</title>
-  <!-- 版本 v1.2.0 ／ 2026-08-22 -->
+  <!-- 版本 v1.3.0 ／ 2026-10-09 -->
 
 
   <!-- Google Fonts：Noto Sans TC（正文）+ Space Mono（裝飾） -->
@@ -544,6 +544,10 @@
       STATUS: 6    // G 欄：狀態（已完成）
     };
 
+    // 點擊統計：Apps Script 網頁應用程式網址（部署方式見 apps-script/click-log.gs）。
+    // 留空就不記錄。紀錄寫在同一份試算表的「點擊紀錄」分頁，不會顯示在網頁上。
+    const LOG_URL = 'https://script.google.com/macros/s/AKfycbzxPoe7cX9I2QWU3G96IJ3oHq7RkWZrkZqOuuPCGI2OwNigBFOGoqoRpoK4eh4N7n5Y/exec';
+
     // =============================================================
     // 以下不用修改
     // =============================================================
@@ -743,18 +747,53 @@
         // 有連結 → 一般工具卡片，開新分頁
         if (tool.link) {
           return `<a class="card" href="${escapeHTML(tool.link)}" target="_blank" rel="noopener"
-                     style="${delay}">${inner}</a>`;
+                     data-index="${allTools.indexOf(tool)}" style="${delay}">${inner}</a>`;
         }
         // 沒連結、只有 prompt → Prompt 卡片，點開彈窗
-        return `<button type="button" class="card card-prompt" data-prompt-index="${allTools.indexOf(tool)}"
+        return `<button type="button" class="card card-prompt" data-index="${allTools.indexOf(tool)}"
                         style="${delay}"><span class="card-badge">Prompt</span>${inner}</button>`;
       }).join('');
 
       // 綁定 Prompt 卡片
       grid.querySelectorAll('.card-prompt').forEach(btn => {
-        btn.addEventListener('click', () => openPrompt(allTools[btn.dataset.promptIndex]));
+        btn.addEventListener('click', () => openPrompt(allTools[btn.dataset.index]));
       });
     }
+
+    // ----- 點擊統計 -----
+    // 訪客代號：存在瀏覽器裡的隨機匿名代號，只用來區分「幾個不同的人」
+    function getVisitorId() {
+      try {
+        let id = localStorage.getItem('toolbox-visitor');
+        if (!id) {
+          id = Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+          localStorage.setItem('toolbox-visitor', id);
+        }
+        return id;
+      } catch (err) {
+        return '';
+      }
+    }
+
+    function logEvent(type, tool) {
+      if (!LOG_URL) return;
+      const body = new URLSearchParams({
+        type,
+        id: tool ? tool.id : '',
+        name: tool ? tool.name : '',
+        category: tool ? tool.category : '',
+        visitor: getVisitorId()
+      });
+      // sendBeacon 不會擋住開新分頁；不支援時退回 fetch
+      if (!(navigator.sendBeacon && navigator.sendBeacon(LOG_URL, body))) {
+        fetch(LOG_URL, { method: 'POST', body, mode: 'no-cors', keepalive: true }).catch(() => {});
+      }
+    }
+
+    grid.addEventListener('click', (e) => {
+      const card = e.target.closest('.card');
+      if (card) logEvent('點擊', allTools[card.dataset.index]);
+    });
 
     // ----- Prompt 彈窗 -----
     const modal = document.getElementById('modal');
@@ -817,6 +856,7 @@
 
     // ----- 啟動！-----
     fetchTools();
+    logEvent('瀏覽');
   </script>
 </body>
 </html>
